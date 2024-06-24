@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./banner.module.css";
+import Image from "next/image";
 
 type BannerProps = {
   title: string;
@@ -21,6 +22,12 @@ const Banner = ({ title, subTitle, imgUrl }: BannerProps) => {
           <h3 className={styles.subTitle}>{subTitle}</h3>
           <div className={styles.playBtnWrapper}>
             <button className={styles.btnWithIcon} onClick={handleOnPlay}>
+              <Image
+                src="/static/play_arrow.svg"
+                alt="play icon"
+                width={32}
+                height={32}
+              />
               <span className={styles.playText}>Play</span>
             </button>
           </div>
@@ -30,11 +37,6 @@ const Banner = ({ title, subTitle, imgUrl }: BannerProps) => {
         className={styles.bannerImg}
         style={{
           backgroundImage: `url(${imgUrl})`,
-          width: "100%",
-          height: "100%",
-          position: "absolute",
-          backgroundSize: "cover",
-          backgroundPosition: "50% 50%",
         }}
       ></div>
     </div>
