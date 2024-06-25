@@ -17,7 +17,9 @@ export default function Home() {
         subTitle="a very cute dog"
         imgUrl="/static/clifford.webp"
       />
-      <Card />
+      <Card imgUrl="/static/clifford.webp" size="large" />
+      <Card imgUrl="/static/clifford.webp" size="medium" />
+      <Card imgUrl="/static/clifford.webp" size="small" />
     </div>
   );
 }
