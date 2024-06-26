@@ -3,10 +3,14 @@ import styles from "@/styles/Home.module.css";
 import Banner from "@/components/banner/banner";
 import NavBar from "@/components/nav/navbar";
 import SectionCards from "@/components/card/section-cards";
-import { getVideos } from "@/lib/videos";
+import { getVideos, VideoType } from "@/lib/videos";
 
-export default function Home() {
+export async function getServerSideProps() {
   const disneyVideos = getVideos();
+  return { props: { disneyVideos } };
+}
+
+export default function Home({ disneyVideos }: { disneyVideos: VideoType[] }) {
   return (
     <div className={styles.container}>
       <Head>

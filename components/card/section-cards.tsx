@@ -9,7 +9,7 @@ type SectionCardsType = {
   size: CardSizes;
 };
 
-const SectionCards = ({ title, videos, size }: SectionCardsType) => {
+const SectionCards = ({ title, videos = [], size }: SectionCardsType) => {
   return (
     <section className={styles.container}>
       <h2 className={styles.title}>{title}</h2>
