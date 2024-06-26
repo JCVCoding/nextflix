@@ -2,16 +2,11 @@ import Head from "next/head";
 import styles from "@/styles/Home.module.css";
 import Banner from "@/components/banner/banner";
 import NavBar from "@/components/nav/navbar";
-import Card, { CardType } from "@/components/card/card";
 import SectionCards from "@/components/card/section-cards";
+import { getVideos } from "@/lib/videos";
 
 export default function Home() {
-  const disneyVideos: Array<CardType> = [
-    { imgUrl: "/static/clifford.webp" },
-    { imgUrl: "/static/clifford.webp" },
-    { imgUrl: "/static/clifford.webp" },
-    { imgUrl: "/static/clifford.webp" },
-  ];
+  const disneyVideos = getVideos();
   return (
     <div className={styles.container}>
       <Head>

@@ -8,8 +8,8 @@ export type CardSizes = "small" | "medium" | "large";
 
 export type CardType = {
   imgUrl: string;
-  size?: CardSizes;
-  id?: number;
+  size: CardSizes;
+  id: number;
 };
 
 const Card = ({
@@ -43,6 +43,7 @@ const Card = ({
           src={imgSrc}
           alt="image"
           fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className={styles.cardImg}
           onError={handleError}
         />

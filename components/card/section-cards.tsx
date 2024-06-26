@@ -1,10 +1,11 @@
 import React from "react";
-import Card, { CardSizes, CardType } from "./card";
+import Card, { CardSizes } from "./card";
 import styles from "./section-cards.module.css";
+import { VideoType } from "@/lib/videos";
 
 type SectionCardsType = {
   title: string;
-  videos: Array<CardType>;
+  videos: Array<VideoType>;
   size: CardSizes;
 };
 
