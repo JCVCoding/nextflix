@@ -1,8 +1,9 @@
 import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
-import { ChangeEvent, MouseEvent, useState } from "react";
+import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { magic } from "@/lib/magic-client";
 
 import styles from "../styles/login.module.css";
 
@@ -10,6 +11,20 @@ const Login = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [userMsg, setUserMsg] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const handleComplete = () => {
+      setIsLoading(false);
+    };
+    router.events.on("routeChangeComplete", handleComplete);
+    router.events.on("routeChangeError", handleComplete);
+
+    return () => {
+      router.events.off("routeChangeComplete", handleComplete);
+      router.events.off("routeChangeError", handleComplete);
+    };
+  }, [router]);
 
   const handleOnChangeEmail = (event: ChangeEvent) => {
     setUserMsg("");
@@ -18,11 +33,22 @@ const Login = () => {
     setEmail(email);
   };
 
-  const handleLoginWithEmail = (event: MouseEvent) => {
+  const handleLoginWithEmail = async (event: MouseEvent) => {
     event.preventDefault();
     if (email) {
-      router.push("/");
+      try {
+        setIsLoading(true);
+        const didToken = await magic?.auth.loginWithMagicLink({ email });
+        console.log({ didToken });
+        if (didToken) {
+          router.push("/");
+        }
+      } catch (error) {
+        console.error("Something went wrong when logging in: ", error);
+        setIsLoading(false);
+      }
     } else {
+      setIsLoading(false);
       setUserMsg("Enter a valid email address");
     }
   };
@@ -59,7 +85,7 @@ const Login = () => {
           />
           <p className={styles.userMsg}>{userMsg}</p>
           <button onClick={handleLoginWithEmail} className={styles.loginBtn}>
-            Log In
+            {isLoading ? "Loading..." : "Log In"}
           </button>
         </div>
       </main>
