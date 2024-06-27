@@ -4,10 +4,11 @@ export type VideoType = {
   id: string;
 };
 
-export const getVideos = async (searchQuery: string = "") => {
+export const getCommonVideos = async (url: string = "") => {
   try {
+    const BASE_URL = "youtube.googleapis.com/youtube/v3";
     const response = await fetch(
-      `https://youtube.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=25&q=${searchQuery}&key=${process.env.YOUTUBE_API_KEY}`
+      `https://${BASE_URL}/${url}&maxResults=25&key=${process.env.YOUTUBE_API_KEY}`
     );
 
     const data = await response.json();
@@ -29,4 +30,15 @@ export const getVideos = async (searchQuery: string = "") => {
     console.error("Something went wrong with video library", error);
     return [];
   }
+};
+
+export const getVideos = (searchQuery: string) => {
+  const URL = `search?part=snippet&type=video&q=${searchQuery}`;
+  return getCommonVideos(URL);
+};
+
+export const getPopularVideos = () => {
+  const URL =
+    "videos?part=snippet%2CcontentDetails%2Cstatistics&chart=mostPopular&regionCode=US";
+  return getCommonVideos(URL);
 };
