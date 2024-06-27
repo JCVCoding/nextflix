@@ -39,7 +39,6 @@ const Login = () => {
       try {
         setIsLoading(true);
         const didToken = await magic?.auth.loginWithMagicLink({ email });
-        console.log({ didToken });
         if (didToken) {
           router.push("/");
         }
