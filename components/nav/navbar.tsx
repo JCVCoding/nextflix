@@ -1,17 +1,29 @@
-import React, { MouseEvent, useState } from "react";
+import React, { MouseEvent, useEffect, useState } from "react";
 import styles from "./navbar.module.css";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { magic } from "@/lib/magic-client";
 
-type NavBarType = {
-  username: string;
-};
-
-const NavBar = ({ username }: NavBarType) => {
+const NavBar = () => {
   const router = useRouter();
 
   const [showDropdown, setShowDropdown] = useState(false);
+  const [username, setUsername] = useState("");
+
+  useEffect(() => {
+    const getUsername = async () => {
+      try {
+        const { email } = await magic?.user.getMetadata()!;
+        if (email) {
+          setUsername(email);
+        }
+      } catch (error) {
+        console.error("Error retrieving email: ", error);
+      }
+    };
+    getUsername();
+  }, []);
 
   const handleOnClickHome = (event: MouseEvent) => {
     event.preventDefault();
