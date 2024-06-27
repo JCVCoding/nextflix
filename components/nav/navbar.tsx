@@ -14,7 +14,7 @@ const NavBar = () => {
   useEffect(() => {
     const getUsername = async () => {
       try {
-        const { email } = await magic?.user.getMetadata()!;
+        const { email } = await magic?.user.getInfo()!;
         if (email) {
           setUsername(email);
         }
@@ -43,7 +43,6 @@ const NavBar = () => {
 
     try {
       await magic?.user.logout();
-      console.log(await magic?.user.isLoggedIn());
       router.push("/login");
     } catch (error) {
       console.error("Error logging out user", error);
