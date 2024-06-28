@@ -1,15 +1,20 @@
 import React from "react";
 import styles from "./banner.module.css";
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 type BannerProps = {
   title: string;
   subTitle: string;
   imgUrl: string;
+  videoID: string;
 };
 
-const Banner = ({ title, subTitle, imgUrl }: BannerProps) => {
-  const handleOnPlay = () => {};
+const Banner = ({ title, subTitle, imgUrl, videoID }: BannerProps) => {
+  const router = useRouter();
+  const handleOnPlay = () => {
+    router.push(`video/${videoID}`);
+  };
   return (
     <div className={styles.container}>
       <div className={styles.leftWrapper}>

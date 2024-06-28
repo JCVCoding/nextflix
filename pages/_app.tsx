@@ -7,7 +7,7 @@ import Loading from "@/components/loading/loading";
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const routeUser = async () => {
@@ -19,7 +19,7 @@ export default function App({ Component, pageProps }: AppProps) {
       }
     };
     routeUser();
-  }, [router]);
+  }, []);
 
   useEffect(() => {
     const handleComplete = () => {
