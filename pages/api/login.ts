@@ -3,6 +3,7 @@ import { magicAdmin } from "@/lib/magic-server";
 import type { NextApiRequest, NextApiResponse } from "next";
 import jwt from "jsonwebtoken";
 import { isNewUser, createNewUser } from "@/lib/db/hasura";
+import { setTokenCookie } from "@/lib/cookie";
 
 type Data = {
   done?: boolean;
@@ -38,13 +39,9 @@ export default async function login(
         process.env.JWT_SECRET
       );
       const isNewUserQuery = await isNewUser(token, metaData.issuer);
-      if (isNewUserQuery) {
-        const createNewUserMutation = await createNewUser(token, metaData);
-        console.log(createNewUserMutation);
-        res.send({ done: true, msg: "is a new user" });
-      } else {
-        res.status(200).json({ done: true, msg: "not a new user" });
-      }
+      isNewUserQuery && (await createNewUser(token, metaData));
+      setTokenCookie(token, res);
+      res.send({ done: true });
     } catch (error) {
       console.error(error);
       res.status(500).json({ done: false });
