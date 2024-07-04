@@ -57,7 +57,7 @@ export const getPopularVideos = () => {
   return getCommonVideos(URL);
 };
 
-export const getYoutubeVideoById = (videoId: string) => {
+export const getYoutubeVideoById = (videoId: string | string[] | undefined) => {
   const URL = `videos?part=snippet%2CcontentDetails%2Cstatistics&id=${videoId}`;
   return getCommonVideos(URL);
 };

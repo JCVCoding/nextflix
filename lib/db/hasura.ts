@@ -76,3 +76,110 @@ export async function createNewUser(
 
   return response;
 }
+
+export async function findVideoIdByUserId(
+  token: string,
+  userId: string | null,
+  videoId: string
+) {
+  const operationsDoc = `
+  query findVideoIdByUserId($userId: String!, $videoId: String!) {
+    stats(where: { userId: {_eq: $userId}, videoId: {_eq: $videoId }}) {
+      id
+      userId
+      videoId
+      favorited
+      watched
+    }
+  }
+`;
+
+  const response = await queryHasuraGraphQL(
+    operationsDoc,
+    "findVideoIdByUserId",
+    {
+      videoId,
+      userId,
+    },
+    token
+  );
+
+  return response?.data?.stats;
+}
+
+export async function insertStats(
+  token: string,
+  {
+    favorited,
+    userId,
+    watched,
+    videoId,
+  }: {
+    favorited: string;
+    userId: string | null;
+    watched: string;
+    videoId: string;
+  }
+) {
+  console.log(favorited, userId, watched, videoId);
+  const operationsDoc = `
+  mutation insertStats($favorited: Int!, $userId: String!, $watched: Boolean!, $videoId: String!) {
+    insert_stats_one(object: {
+      favorited: $favorited, 
+      userId: $userId, 
+      watched: $watched, 
+      videoId: $videoId
+    }) {
+        favorited
+        userId
+    }
+  }
+`;
+
+  return await queryHasuraGraphQL(
+    operationsDoc,
+    "insertStats",
+    { favorited, userId, watched, videoId },
+    token
+  );
+}
+
+export async function updateStats(
+  token: string,
+  {
+    favorited,
+    userId,
+    watched,
+    videoId,
+  }: {
+    favorited: number;
+    userId: string | null;
+    watched: boolean;
+    videoId: string;
+  }
+) {
+  const operationsDoc = `
+mutation updateStats($favorited: Int!, $userId: String!, $watched: Boolean!, $videoId: String!) {
+  update_stats(
+    _set: {watched: $watched, favorited: $favorited}, 
+    where: {
+      userId: {_eq: $userId}, 
+      videoId: {_eq: $videoId}
+    }) {
+    returning {
+      favorited,
+      userId,
+      watched,
+      videoId
+    }
+  }
+}
+`;
+
+  return await queryHasuraGraphQL(
+    operationsDoc,
+    "updateStats",
+    { favorited, userId, watched, videoId },
+    token
+  );
+}

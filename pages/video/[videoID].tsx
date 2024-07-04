@@ -7,7 +7,7 @@ import { getYoutubeVideoById } from "@/lib/videos";
 import NavBar from "@/components/nav/navbar";
 import Like from "@/components/icons/like-icon";
 import DisLike from "@/components/icons/dislike-icon";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 Modal.setAppElement("#__next");
 
@@ -58,18 +58,54 @@ const Video = ({ video }: InferGetStaticPropsType<typeof getStaticProps>) => {
     title,
     statistics: { viewCount } = { viewCount: 0 },
   } = video;
-  const handleToggleDislike = () => {
-    if (toggleDislike !== true) {
-      setToggleDislike(true);
-      setToggleLike(false);
-    }
+
+  useEffect(() => {
+    const handleLikeDislikeService = async () => {
+      const response = await fetch(`/api/stats?videoId=${videoId}`, {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+        },
+      });
+      const data = await response.json();
+      if (data.length > 0) {
+        const favorited = data[0].favorited;
+        if (favorited === 1) {
+          setToggleLike(true);
+        } else if (favorited === 0) {
+          setToggleDislike(true);
+        }
+      }
+    };
+    handleLikeDislikeService();
+  }, [videoId]);
+
+  const runRatingService = async (favorited: number) => {
+    return await fetch("/api/stats", {
+      method: "POST",
+      body: JSON.stringify({ videoId, favorited }),
+      headers: {
+        "content-type": "application/json",
+      },
+    });
   };
-  const handleToggleLike = () => {
-    if (toggleLike !== true) {
-      setToggleLike(true);
-      setToggleDislike(false);
-    }
+
+  const handleToggleDislike = async () => {
+    setToggleDislike(!toggleDislike);
+    setToggleLike(toggleDislike);
+    const val = !toggleDislike;
+    const favorited = val ? 0 : 1;
+    const response = await runRatingService(favorited);
   };
+
+  const handleToggleLike = async () => {
+    const val = !toggleLike;
+    setToggleLike(val);
+    setToggleDislike(toggleLike);
+    const favorited = val ? 1 : 0;
+    const response = await runRatingService(favorited);
+  };
+
   return (
     <div className={styles.container}>
       <NavBar />
