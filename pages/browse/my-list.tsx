@@ -3,8 +3,23 @@ import NavBar from "@/components/nav/navbar";
 import Head from "next/head";
 
 import styles from "../../styles/my-list.module.css";
+import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
+import redirectUser from "@/utils/redirectUser";
+import { getMyList } from "@/lib/videos";
 
-const MyList = () => {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const { userId, token } = await redirectUser(context);
+  const videos = await getMyList(userId, token);
+  return {
+    props: {
+      myListVideos: videos,
+    },
+  };
+}
+
+const MyList = ({
+  myListVideos,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
     <div>
       <Head>
@@ -13,7 +28,11 @@ const MyList = () => {
       <main className={styles.main}>
         <NavBar />
         <div className={styles.sectionWrapper}>
-          <SectionCards title={"My List"} videos={[]} size={"small"} />
+          <SectionCards
+            title={"My List"}
+            videos={myListVideos}
+            size={"small"}
+          />
         </div>
       </main>
     </div>

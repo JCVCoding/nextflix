@@ -1,5 +1,5 @@
 import videoTestData from "../data/videos.json";
-import { getWatchedVideos } from "./db/hasura";
+import { getWatchedVideos, getMyListVideos } from "./db/hasura";
 
 export type VideoType = {
   title: string;
@@ -78,14 +78,14 @@ export const getWatchItAgainVideos = async (
   );
 };
 
-// export const getMyList = async (userId, token) => {
-//   const videos = await getMyListVideos(userId, token);
-//   return (
-//     videos?.map((video) => {
-//       return {
-//         id: video.videoId,
-//         imgUrl: `https://i.ytimg.com/vi/${video.videoId}/maxresdefault.jpg`,
-//       };
-//     }) || []
-//   );
-// };
+export const getMyList = async (userId: string, token: string) => {
+  const videos = await getMyListVideos(userId, token);
+  return (
+    videos?.map((video: VideoType) => {
+      return {
+        id: video.videoId,
+        imgUrl: `https://i.ytimg.com/vi/${video.videoId}/maxresdefault.jpg`,
+      };
+    }) || []
+  );
+};
