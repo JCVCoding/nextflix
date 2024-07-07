@@ -28,7 +28,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
   const videoID = params!.videoId;
   const videoArray: Video[] = await getYoutubeVideoById(videoID);
-  console.log(videoArray);
 
   return {
     props: { video: videoArray.length > 0 ? videoArray[0] : {} },

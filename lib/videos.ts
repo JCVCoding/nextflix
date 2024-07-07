@@ -5,6 +5,7 @@ export type VideoType = {
   title: string;
   imgUrl: string;
   videoId: string;
+  id: string;
 };
 
 const fetchVideos = async (url: string) => {
@@ -69,7 +70,6 @@ export const getWatchItAgainVideos = async (
   const videos = await getWatchedVideos(userId, token);
   return (
     videos?.map((video: VideoType) => {
-      console.log(video);
       return {
         id: video.videoId,
         imgUrl: `https://i.ytimg.com/vi/${video.videoId}/maxresdefault.jpg`,
