@@ -183,3 +183,27 @@ mutation updateStats($favorited: Int!, $userId: String!, $watched: Boolean!, $vi
     token
   );
 }
+
+export async function getWatchedVideos(userId: string | null, token: string) {
+  const operationsDoc = `
+  query watchedVideos($userId: String!) {
+    stats(where: {
+      watched: {_eq: true}, 
+      userId: {_eq: $userId},
+    }) {
+      videoId
+    }
+  }
+`;
+
+  const response = await queryHasuraGraphQL(
+    operationsDoc,
+    "watchedVideos",
+    {
+      userId,
+    },
+    token
+  );
+
+  return response?.data?.stats;
+}

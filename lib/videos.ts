@@ -1,10 +1,10 @@
 import videoTestData from "../data/videos.json";
-// import { getMyListVideos, getWatchedVideos } from "./db/hasura";
+import { getWatchedVideos } from "./db/hasura";
 
 export type VideoType = {
   title: string;
   imgUrl: string;
-  id: string;
+  videoId: string;
 };
 
 const fetchVideos = async (url: string) => {
@@ -62,17 +62,21 @@ export const getYoutubeVideoById = (videoId: string | string[] | undefined) => {
   return getCommonVideos(URL);
 };
 
-// export const getWatchItAgainVideos = async (userId, token) => {
-//   const videos = await getWatchedVideos(userId, token);
-//   return (
-//     videos?.map((video) => {
-//       return {
-//         id: video.videoId,
-//         imgUrl: `https://i.ytimg.com/vi/${video.videoId}/maxresdefault.jpg`,
-//       };
-//     }) || []
-//   );
-// };
+export const getWatchItAgainVideos = async (
+  userId: string | null,
+  token: string
+) => {
+  const videos = await getWatchedVideos(userId, token);
+  return (
+    videos?.map((video: VideoType) => {
+      console.log(video);
+      return {
+        id: video.videoId,
+        imgUrl: `https://i.ytimg.com/vi/${video.videoId}/maxresdefault.jpg`,
+      };
+    }) || []
+  );
+};
 
 // export const getMyList = async (userId, token) => {
 //   const videos = await getMyListVideos(userId, token);

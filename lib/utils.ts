@@ -1,6 +1,8 @@
 import { jwtVerify } from "jose";
 
-export async function verifyToken(token: string): Promise<string | null> {
+export async function verifyToken(
+  token: string | null
+): Promise<string | null> {
   try {
     if (token) {
       const verified = await jwtVerify(
