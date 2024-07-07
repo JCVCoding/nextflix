@@ -10,13 +10,16 @@ const NavBar = () => {
 
   const [showDropdown, setShowDropdown] = useState(false);
   const [username, setUsername] = useState("");
+  const [didToken, setDidToken] = useState("");
 
   useEffect(() => {
     const getUsername = async () => {
       try {
         const { email } = await magic?.user.getInfo()!;
+        const didToken = await magic?.user.getIdToken()!;
         if (email) {
           setUsername(email);
+          setDidToken(didToken);
         }
       } catch (error) {
         console.error("Error retrieving email: ", error);
@@ -42,8 +45,13 @@ const NavBar = () => {
     event.preventDefault();
 
     try {
-      await magic?.user.logout();
-      router.push("/login");
+      await fetch("api/logout", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${didToken}`,
+          "Content-Type": "application/json",
+        },
+      });
     } catch (error) {
       console.error("Error logging out user", error);
       router.push("/login");
