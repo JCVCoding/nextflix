@@ -1,6 +1,6 @@
 import { MagicUserMetadata } from "@magic-sdk/admin";
 
-export async function isNewUser(token: string, issuer: string) {
+export async function isNewUser(token: string | null, issuer: string | null) {
   const operationsDoc = `
   query isNewUser($issuer: String!) {
     users(where: {issuer: {_eq: $issuer}}) {
