@@ -65,7 +65,7 @@ export const getYoutubeVideoById = (videoId: string | string[] | undefined) => {
 
 export const getWatchItAgainVideos = async (
   userId: string | null,
-  token: string
+  token: string | null
 ) => {
   const videos = await getWatchedVideos(userId, token);
   return (
@@ -78,7 +78,10 @@ export const getWatchItAgainVideos = async (
   );
 };
 
-export const getMyList = async (userId: string, token: string) => {
+export const getMyList = async (
+  userId: string | null,
+  token: string | null
+) => {
   const videos = await getMyListVideos(userId, token);
   return (
     videos?.map((video: VideoType) => {

@@ -27,7 +27,7 @@ async function queryHasuraGraphQL(
   operationsDoc: string,
   operationName: string,
   variables: Record<string, any>,
-  token: string
+  token: string | null
 ) {
   const requestHeaders: HeadersInit = new Headers({
     Authorization: `Bearer ${token}`,
@@ -183,7 +183,10 @@ mutation updateStats($favorited: Int!, $userId: String!, $watched: Boolean!, $vi
   );
 }
 
-export async function getWatchedVideos(userId: string | null, token: string) {
+export async function getWatchedVideos(
+  userId: string | null,
+  token: string | null
+) {
   const operationsDoc = `
   query watchedVideos($userId: String!) {
     stats(where: {
@@ -207,7 +210,10 @@ export async function getWatchedVideos(userId: string | null, token: string) {
   return response?.data?.stats;
 }
 
-export async function getMyListVideos(userId: string, token: string) {
+export async function getMyListVideos(
+  userId: string | null,
+  token: string | null
+) {
   const operationsDoc = `
   query favoritedVideos($userId: String!) {
     stats(where: {

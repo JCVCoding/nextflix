@@ -1,7 +1,7 @@
 import { jwtVerify } from "jose";
 
 export async function verifyToken(
-  token: string | null
+  token: string | null | undefined
 ): Promise<string | null> {
   try {
     if (token) {
