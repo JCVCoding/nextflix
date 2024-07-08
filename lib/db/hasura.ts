@@ -34,15 +34,18 @@ async function queryHasuraGraphQL(
     "Content-Type": "application/json",
   });
 
-  const result = await fetch(process.env.NEXT_PUBLIC_HASURA_ADMIN_URL, {
-    method: "POST",
-    headers: requestHeaders,
-    body: JSON.stringify({
-      query: operationsDoc,
-      variables,
-      operationName,
-    }),
-  });
+  const result = await fetch(
+    process.env.NEXT_PUBLIC_HASURA_ADMIN_URL as string,
+    {
+      method: "POST",
+      headers: requestHeaders,
+      body: JSON.stringify({
+        query: operationsDoc,
+        variables,
+        operationName,
+      }),
+    }
+  );
   return await result.json();
 }
 
