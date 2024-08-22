@@ -56,8 +56,8 @@ export default function Home({
         <NavBar />
         <Banner
           videoID="4zH5iYM4wJo"
-          title="Clifford the red dog"
-          subTitle="a very cute dog"
+          title="Clifford The Big Red Dog"
+          subTitle=""
           imgUrl="/static/clifford.webp"
         />
         <div className={styles.sectionWrapper}>
