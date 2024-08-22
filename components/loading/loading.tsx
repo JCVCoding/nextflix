@@ -1,7 +1,7 @@
 import styles from "./loading.module.css";
 
-const Loading = () => {
-  return <div className={styles.loader}>Loading...</div>;
+const Loading = ({ isSmall }: { isSmall: boolean }) => {
+  return <div className={`${styles.loader} ${styles.small}`}>Loading...</div>;
 };
 
 export default Loading;

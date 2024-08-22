@@ -24,9 +24,7 @@ type Repo = {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const { params } = context;
-
-  const videoID = params!.videoId;
+  const videoID = context?.params?.videoID;
   const videoArray: Video[] = await getYoutubeVideoById(videoID);
 
   return {

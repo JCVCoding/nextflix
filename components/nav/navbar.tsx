@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { magic } from "@/lib/magic-client";
+import Loading from "../loading/loading";
 
 const NavBar = () => {
   const router = useRouter();
@@ -12,20 +13,23 @@ const NavBar = () => {
   const [username, setUsername] = useState("");
   const [didToken, setDidToken] = useState("");
 
-  useEffect(() => {
-    const getUsername = async () => {
-      try {
-        const { email } = await magic?.user.getMetadata()!;
-        const didToken = await magic?.user.getIdToken()!;
-        if (email) {
-          setUsername(email);
-          setDidToken(didToken);
-        }
-      } catch (error) {
-        console.error("Error retrieving email: ", error);
+  const getUsername = async () => {
+    try {
+      const { email } = await magic?.user.getInfo()!;
+      const didToken = await magic?.user.getIdToken()!;
+      if (email) {
+        setUsername(email);
+        setDidToken(didToken);
       }
-    };
-    getUsername();
+    } catch (error) {
+      console.error("Error retrieving email: ", error);
+    }
+  };
+
+  useEffect(() => {
+    (async () => {
+      await getUsername();
+    })();
   }, []);
 
   const handleOnClickHome = (event: MouseEvent) => {
@@ -84,24 +88,31 @@ const NavBar = () => {
         </ul>
         <nav className={styles.navContainer}>
           <div>
-            <button className={styles.usernameBtn} onClick={handleShowDropdown}>
-              <p className={styles.username}>{username}</p>
-              {showDropdown ? (
-                <Image
-                  src={"/static/up_arrow.svg"}
-                  alt="Collapse dropdown"
-                  width={24}
-                  height={24}
-                />
-              ) : (
-                <Image
-                  src={"/static/expand_more.svg"}
-                  alt="Expand dropdown"
-                  width={24}
-                  height={24}
-                />
-              )}
-            </button>
+            {username ? (
+              <button
+                className={styles.usernameBtn}
+                onClick={handleShowDropdown}
+              >
+                <p className={styles.username}>{username}</p>
+                {showDropdown ? (
+                  <Image
+                    src={"/static/up_arrow.svg"}
+                    alt="Collapse dropdown"
+                    width={24}
+                    height={24}
+                  />
+                ) : (
+                  <Image
+                    src={"/static/expand_more.svg"}
+                    alt="Expand dropdown"
+                    width={24}
+                    height={24}
+                  />
+                )}
+              </button>
+            ) : (
+              <Loading isSmall={true} />
+            )}
             {showDropdown && (
               <div className={styles.navDropdown}>
                 <div>

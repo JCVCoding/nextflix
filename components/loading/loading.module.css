@@ -22,6 +22,12 @@
   -webkit-animation-delay: -0.16s;
   animation-delay: -0.16s;
 }
+.small {
+  margin: 0px auto;
+  top:auto;
+  bottom: 20px;
+  font-size: 8px;
+}
 .loader:before,
 .loader:after {
   content: "";
