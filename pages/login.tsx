@@ -89,12 +89,20 @@ const Login = () => {
           <h1 className={styles.loginHeader}>Log In</h1>
           <input
             type="text"
-            name=""
-            id=""
+            name="emailAddress"
+            id="emailAddress"
             placeholder="Email Address"
             className={styles.emailInput}
             onChange={handleOnChangeEmail}
+            aria-labelledby="emailAddress_label"
           />
+          <label
+            id="emailAddress_label"
+            htmlFor="emailAddress"
+            className={styles.label}
+          >
+            Email Address
+          </label>
           <p className={styles.userMsg}>{userMsg}</p>
           <button onClick={handleLoginWithEmail} className={styles.loginBtn}>
             {isLoading ? "Loading..." : "Log In"}

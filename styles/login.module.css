@@ -132,3 +132,7 @@
       margin-top: 2rem /* 128px */;
     }
   }
+
+  .label {
+    display: none;
+  }

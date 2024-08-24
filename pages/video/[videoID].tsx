@@ -125,13 +125,13 @@ const Video = ({ video }: InferGetStaticPropsType<typeof getStaticProps>) => {
         ></iframe>
         <div className={styles.likeDislikeBtnWrapper}>
           <div className={styles.likeBtnWrapper}>
-            <button onClick={handleToggleLike}>
+            <button onClick={handleToggleLike} aria-label="like video">
               <div className={styles.btnWrapper}>
                 <Like selected={toggleLike} />
               </div>
             </button>
           </div>
-          <button onClick={handleToggleDislike}>
+          <button onClick={handleToggleDislike} aria-label="dislike video">
             <div className={styles.btnWrapper}>
               <DisLike selected={toggleDislike} />
             </div>
