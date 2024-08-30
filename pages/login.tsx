@@ -105,7 +105,7 @@ const Login = () => {
           </label>
           <p className={styles.userMsg}>{userMsg}</p>
           <button onClick={handleLoginWithEmail} className={styles.loginBtn}>
-            {isLoading ? "Loading..." : "Log In"}
+            {isLoading ? "Loading..." : "Email Magic Link"}
           </button>
         </div>
       </main>
